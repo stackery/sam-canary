@@ -16,6 +16,8 @@ Resources:
       Tracing: Active
       Policies:
         - AWSXrayWriteOnlyAccess
+    Metadata:
+      StackeryName: canaryTest
   appFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -37,6 +39,8 @@ Resources:
         Hooks:
           PreTraffic: !Ref canaryTest
           PostTraffic: !Ref canaryTest
+    Metadata:
+      StackeryName: appFunction
 Parameters:
   StackTagName:
     Type: String
