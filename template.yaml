@@ -31,6 +31,12 @@ Resources:
       Tracing: Active
       Policies:
         - AWSXrayWriteOnlyAccess
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: Canary10Percent10Minutes
+        Hooks:
+          PreTraffic: !Ref canaryTest
+          PostTraffic: !Ref canaryTest
 Parameters:
   StackTagName:
     Type: String
