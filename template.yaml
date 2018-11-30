@@ -53,7 +53,7 @@ Resources:
         - AWSXrayWriteOnlyAccess
       AutoPublishAlias: live
       DeploymentPreference:
-        Type: Canary10Percent10Minutes
+        Type: Canary10Percent1Minute
         Hooks:
           PreTraffic: !Ref canaryTest
           PostTraffic: !Ref canaryTest
