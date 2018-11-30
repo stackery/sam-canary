@@ -30,6 +30,10 @@ Resources:
               Action:
                 - lambda:InvokeFunction
               Resource: !Ref appFunction.Version
+      Environment:
+        Variables:
+          FUNCTION_NAME_VERSION: !Ref appFunction.Version
+          FUNCTION_ARN: !GetAtt appFunction.Arn
     Metadata:
       StackeryName: canaryTest
   appFunction:
