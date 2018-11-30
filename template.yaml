@@ -4,6 +4,8 @@ Resources:
   canaryTest:
     Type: AWS::Serverless::Function
     Properties:
+      DeploymentPreference:
+        Enabled: false
       FunctionName: !Sub ${AWS::StackName}-canaryTest
       Description: !Sub
         - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
