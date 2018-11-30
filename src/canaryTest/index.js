@@ -19,7 +19,6 @@ exports.handler = async event => {
     */
   const functionParams = {
     FunctionName: process.env.FUNCTION_NAME_VERSION, /* required */
-    ClientContext: '{}',
     InvocationType: 'RequestResponse',
     Payload: '{"canary": true}' /* Strings will be Base-64 encoded on your behalf */
   };
