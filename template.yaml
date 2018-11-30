@@ -39,8 +39,34 @@ Resources:
         Hooks:
           PreTraffic: !Ref canaryTest
           PostTraffic: !Ref canaryTest
+      Events:
+        apiC303638BGET:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+            RestApiId: !Ref apiC303638B
     Metadata:
       StackeryName: appFunction
+  apiC303638B:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub
+        - ${ResourceName} From Stack ${StackTagName} Environment ${EnvironmentTagName}
+        - ResourceName: apiC303638B
+      StageName: !Ref EnvironmentAPIGatewayStageName
+      DefinitionBody:
+        openapi: '3.0'
+        info: {}
+        paths:
+          /:
+            get:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${appFunction.Arn}/invocations
+              responses: {}
+      EndpointConfiguration: REGIONAL
 Parameters:
   StackTagName:
     Type: String
@@ -48,3 +74,6 @@ Parameters:
   EnvironmentTagName:
     Type: String
     Description: Environment Name (injected by Stackery at deployment time)
+  EnvironmentAPIGatewayStageName:
+    Type: String
+    Description: Environment name used for API Gateway Stage names (injected by Stackery at deployment time)
