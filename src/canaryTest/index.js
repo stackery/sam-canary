@@ -17,20 +17,25 @@ exports.handler = async event => {
   /*
       [Perform validation or prewarming steps here]
     */
-  const functionParams = {
-    FunctionName: process.env.FUNCTION_NAME_VERSION, /* required */
-    InvocationType: 'RequestResponse',
-    Payload: '{"canary": true}' /* Strings will be Base-64 encoded on your behalf */
-  };
-  await lambda.invoke(functionParams).promise();
-  // Prepare the validation test results with the deploymentId and
-  // the lifecycleEventHookExecutionId for AWS CodeDeploy.
-  const params = {
+  const codeDeployParams = {
     deploymentId: deploymentId,
     lifecycleEventHookExecutionId: lifecycleEventHookExecutionId,
     status: 'Succeeded' // status can be 'Succeeded' or 'Failed'
   };
+  try {
+    const functionParams = {
+      FunctionName: process.env.FUNCTION_NAME_VERSION, /* required */
+      InvocationType: 'RequestResponse',
+      Payload: '{"canary": true}' /* Strings will be Base-64 encoded on your behalf */
+    };
+    await lambda.invoke(functionParams).promise();
+    // Prepare the validation test results with the deploymentId and
+    // the lifecycleEventHookExecutionId for AWS CodeDeploy.
 
-  // Pass AWS CodeDeploy the prepared validation test results.
-  await codedeploy.putLifecycleEventHookExecutionStatus(params).promise();
+    // Pass AWS CodeDeploy the prepared validation test results.
+    await codedeploy.putLifecycleEventHookExecutionStatus(codeDeployParams).promise();
+  } catch (error) {
+    codeDeployParams.status = 'Failed';
+    await codedeploy.putLifecycleEventHookExecutionStatus(codeDeployParams).promise();
+  }
 };
