@@ -6,7 +6,7 @@ Resources:
     Properties:
       DeploymentPreference:
         Enabled: false
-      FunctionName: !Sub ${AWS::StackName}-canaryTest
+      FunctionName: !Sub CodeDeployHook_${AWS::StackName}-canaryTest
       Description: !Sub
         - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
         - ResourceName: canaryTest
