@@ -54,6 +54,10 @@ Resources:
       AutoPublishAlias: live
       DeploymentPreference:
         Type: Canary10Percent5Minutes
+        Alarms:
+          # A list of alarms that you want to monitor
+          - !Ref AliasErrorMetricGreaterThanZeroAlarm
+          - !Ref LatestVersionErrorMetricGreaterThanZeroAlarm
         Hooks:
           PreTraffic: !Ref canaryTest
           PostTraffic: !Ref canaryTest
