@@ -37,5 +37,6 @@ exports.handler = async event => {
   } catch (error) {
     codeDeployParams.status = 'Failed';
     await codedeploy.putLifecycleEventHookExecutionStatus(codeDeployParams).promise();
+    throw error;
   }
 };
