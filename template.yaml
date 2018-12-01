@@ -55,7 +55,6 @@ Resources:
       DeploymentPreference:
         Type: Canary10Percent5Minutes
         Alarms:
-          # A list of alarms that you want to monitor
           - !Ref AliasErrorMetricGreaterThanZeroAlarm
           - !Ref LatestVersionErrorMetricGreaterThanZeroAlarm
         Hooks:
@@ -86,36 +85,35 @@ Resources:
               x-amazon-apigateway-integration:
                 httpMethod: POST
                 type: aws_proxy
-                uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${appFunction.Arn}/invocations
+                uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${appFunction.Arn}:live/invocations
               responses: {}
       EndpointConfiguration: REGIONAL
   AliasErrorMetricGreaterThanZeroAlarm:
-    Type: "AWS::CloudWatch::Alarm"
+    Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmDescription: Lambda Function Error > 0
       ComparisonOperator: GreaterThanThreshold
       Dimensions:
         - Name: Resource
-          Value: !Sub "${appFunction}:live"
+          Value: !Sub ${appFunction}:live
         - Name: FunctionName
-          Value: !Ref appFunction 
+          Value: !Ref appFunction
       EvaluationPeriods: 2
       MetricName: Errors
       Namespace: AWS/Lambda
       Period: 60
       Statistic: Sum
       Threshold: 0
-
   LatestVersionErrorMetricGreaterThanZeroAlarm:
-    Type: "AWS::CloudWatch::Alarm"
+    Type: AWS::CloudWatch::Alarm
     Properties:
       AlarmDescription: Lambda Function Error > 0
       ComparisonOperator: GreaterThanThreshold
       Dimensions:
         - Name: Resource
-          Value: !Sub "${appFunction}:live"
+          Value: !Sub ${appFunction}:live
         - Name: FunctionName
-          Value: !Ref appFunction 
+          Value: !Ref appFunction
         - Name: ExecutedVersion
           Value: !Ref appFunction.Version
       EvaluationPeriods: 2
