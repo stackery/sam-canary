@@ -55,7 +55,6 @@ Resources:
       DeploymentPreference:
         Type: Canary10Percent5Minutes
         Alarms:
-          - !Ref AliasErrorMetricGreaterThanZeroAlarm
           - !Ref LatestVersionErrorMetricGreaterThanZeroAlarm
         Hooks:
           PreTraffic: !Ref canaryTest
@@ -101,22 +100,6 @@ Resources:
                 uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${appFunction.Arn}:live/invocations
               responses: {}
       EndpointConfiguration: REGIONAL
-  AliasErrorMetricGreaterThanZeroAlarm:
-    Type: AWS::CloudWatch::Alarm
-    Properties:
-      AlarmDescription: Lambda Function Error > 0
-      ComparisonOperator: GreaterThanThreshold
-      Dimensions:
-        - Name: Resource
-          Value: !Sub ${appFunction}:live
-        - Name: FunctionName
-          Value: !Ref appFunction
-      EvaluationPeriods: 2
-      MetricName: Errors
-      Namespace: AWS/Lambda
-      Period: 60
-      Statistic: Sum
-      Threshold: 0
   LatestVersionErrorMetricGreaterThanZeroAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
