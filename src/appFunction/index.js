@@ -1,5 +1,6 @@
-exports.handler = async message => {
+exports.handler = async (message, context) => {
   console.log(message);
+  console.log(context);
   const response = {
     statusCode: '200',
     body: '<h1>Success</h1>',
