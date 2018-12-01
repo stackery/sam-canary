@@ -28,6 +28,11 @@ exports.handler = async event => {
       InvocationType: 'RequestResponse',
       Payload: '{"canary": true}' /* Strings will be Base-64 encoded on your behalf */
     };
+
+    // check for race condition create IAM role
+    console.log('waiting 5 seconds');
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
     await lambda.invoke(functionParams).promise();
     // Prepare the validation test results with the deploymentId and
     // the lifecycleEventHookExecutionId for AWS CodeDeploy.
