@@ -6,7 +6,7 @@ exports.handler = async (message, context) => {
   }
   const response = {
     statusCode: '200',
-    body: '<h1>Success</h1>',
+    body: `Success invoking version ${context.functionVersion}`,
     headers: {
       'Access-Control-Allow-Origin': '*'
     }
