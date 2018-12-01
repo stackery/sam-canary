@@ -128,7 +128,7 @@ Resources:
         - Name: FunctionName
           Value: !Ref appFunction
         - Name: ExecutedVersion
-          Value: !GetAtt ["appFunction", "Version.Version"]
+          Value: !GetAtt appFunction.Version
       EvaluationPeriods: 2
       MetricName: Errors
       Namespace: AWS/Lambda
