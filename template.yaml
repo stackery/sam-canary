@@ -67,6 +67,12 @@ Resources:
             Path: /
             Method: GET
             RestApiId: !Ref apiC303638B
+        apiC303638BGETerror:
+          Type: Api
+          Properties:
+            Path: /error
+            Method: GET
+            RestApiId: !Ref apiC303638B
     Metadata:
       StackeryName: appFunction
   apiC303638B:
@@ -81,6 +87,13 @@ Resources:
         info: {}
         paths:
           /:
+            get:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${appFunction.Arn}:live/invocations
+              responses: {}
+          /error:
             get:
               x-amazon-apigateway-integration:
                 httpMethod: POST
