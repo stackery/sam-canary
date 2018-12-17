@@ -72,6 +72,9 @@ Resources:
             Path: /error
             Method: GET
             RestApiId: !Ref apiC303638B
+      Environment:
+        Variables:
+          Foo: !Ref EnvConfigVPCConfigVpcIdAsString
     Metadata:
       StackeryName: appFunction
   apiC303638B:
@@ -128,3 +131,9 @@ Parameters:
   EnvironmentAPIGatewayStageName:
     Type: String
     Description: Environment name used for API Gateway Stage names (injected by Stackery at deployment time)
+  EnvConfigVPCConfigVpcIdAsString:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /<EnvironmentName>/VPC_Config/VpcId
+Metadata:
+  EnvConfigParameters:
+    EnvConfigVPCConfigVpcIdAsString: VPC_Config.VpcId
