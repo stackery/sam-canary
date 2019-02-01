@@ -34,6 +34,7 @@ Resources:
         Variables:
           FUNCTION_NAME_VERSION: !Ref appFunction.Version
           FUNCTION_ARN: !GetAtt appFunction.Arn
+          API_URL: !Sub https://${apiC303638B}.execute-api.${AWS::Region}.amazonaws.com/${apiC303638B.Stage}
     Metadata:
       StackeryName: canaryTest
   appFunction:
